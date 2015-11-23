@@ -7,7 +7,7 @@ $.fn.slider = function(config){
 
     if(config !== undefined){
         var options = $.extend(
-            {'auto':1,'per_page':5,'delay': 500,'type':'fade','width':0,'height':220},config
+            {'auto':1,'per_page':5,'delay': 500,'type':'fade','width':0,'height':220,'prev':'<i class="fa fa-arrow-circle-left fa-2x"></i>','next':'<i class="fa fa-arrow-circle-right fa-2x"></i>','show_next_prev':1},config
         )
     }
     //console.log(options.per_page);
@@ -26,24 +26,19 @@ $.fn.slider = function(config){
 
 
         var images =  $(this).children('.postslider');
-        $(images).css('width',postsliderwidth);
-        $(images).css('margin','2px');
-        $(images).css('height',postsliderheight);
-        $(images).children().css('width',postsliderwidth-6);
-        $(images).children().css('padding','2px');
-        //$(images).children('img').css('height',(postsliderheight-70));
+
+        
         $(this).children('.postslider').hide();
 
         $(this).prepend('<div style="" class="holder_slide"></div>');
-        $(this).children('.holder_slide').css('width',width);
-        $(this).children('.holder_slide').css('height',height);
+
 
         for(i = 0;i<options.per_page;i++){
 
             $(this).children('.holder_slide').append($(images).eq(i).clone());
             $(this).children('.holder_slide').children().show();
             $(this).children('.holder_slide').children().addClass('active');
-            $(this).children('.holder_slide').children().css('position','relative');
+         
 
         }
         var images       =  $(this).children('.postslider');
@@ -51,9 +46,13 @@ $.fn.slider = function(config){
         var page_number  = Math.ceil(length_/options.per_page);
 
         var _this = $(this);
-        $(this).prepend('<button style="z-index:8888;position: absolute;left: 0;top:'+parseInt(($(this).height()-80)/2)+'px;" class="prev btn btn-primary btn-xs">Prev</button>');
+        
         $(this).append('<input  class="hidden-page-number" type="hidden" data-page ="'+0+'" data-start = "'+0+'" data-end = "'+(options.per_page -1)+'" >');
-        $(this).append('<button style="position: absolute;left:'+parseInt(((postsliderwidth+2)*options.per_page))+'px;top:'+parseInt(($(this).height()-80)/2)+'px;"class="next btn btn-primary btn-xs">Next</button>');
+        if(options.show_next_prev == 1){
+            $(this).prepend('<a class="prev">'+options.prev+'</a>');
+            $(this).append('<a class="next">'+options.next+'</a>');
+        }
+        
 
           if(options.auto == 1){
             // if auto change
@@ -82,25 +81,30 @@ $.fn.slider = function(config){
                         $(_this).children('.holder_slide').append($(images).eq(p).clone());
                         $(_this).children('.holder_slide').children().show();
                         $(_this).children('.holder_slide').children().addClass('active');
-                        $(_this).children('.holder_slide').children().css('position','relative');
+                       
                     }
 
-                }else{
+                }else if(next_start > next_end){
 
                     for(p = next_start;p <$(images).length;p++){
 
                         $(_this).children('.holder_slide').append($(images).eq(p).clone());
                         $(_this).children('.holder_slide').children().show();
                         $(_this).children('.holder_slide').children().addClass('active');
-                        $(_this).children('.holder_slide').children().css('position','relative');
+                        
                     }
                     for(p =0;p <=next_end;p++){
 
                         $(_this).children('.holder_slide').append($(images).eq(p).clone());
                         $(_this).children('.holder_slide').children().show();
                         $(_this).children('.holder_slide').children().addClass('active');
-                        $(_this).children('.holder_slide').children().css('position','relative');
+                       
                     }
+                }
+                else{
+                        $(_this).children('.holder_slide').append($(images).eq(next_start).clone());
+                        $(_this).children('.holder_slide').children().show();
+                        $(_this).children('.holder_slide').children().addClass('active');
                 }
 
                 $(_this).children('.hidden-page-number').attr('data-start',next_start);
@@ -117,7 +121,6 @@ $.fn.slider = function(config){
         var length_ =  images.length;
         var start   =  $(images).siblings('.hidden-page-number').attr('data-start') ;
         start       = parseInt(start);
-
         var end     =  $(images).siblings('.hidden-page-number').attr('data-end') ;
         end         = parseInt(end);
 
@@ -136,25 +139,30 @@ $.fn.slider = function(config){
                 $(this).siblings('.holder_slide').append($(images).eq(p).clone());
                 $(this).siblings('.holder_slide').children().show();
                 $(this).siblings('.holder_slide').children().addClass('active');
-                $(this).siblings('.holder_slide').children().css('position','relative');
+               
             }
 
-        }else{
+        }else if(next_start >next_end){
 
             for(p = next_start;p <$(images).length;p++){
 
                 $(this).siblings('.holder_slide').append($(images).eq(p).clone());
                 $(this).siblings('.holder_slide').children().show();
                 $(this).siblings('.holder_slide').children().addClass('active');
-                $(this).siblings('.holder_slide').children().css('position','relative');
+               
             }
             for(p =0;p <=next_end;p++){
 
                 $(this).siblings('.holder_slide').append($(images).eq(p).clone());
                 $(this).siblings('.holder_slide').children().show();
                 $(this).siblings('.holder_slide').children().addClass('active');
-                $(this).siblings('.holder_slide').children().css('position','relative');
+                
             }
+        }
+        else{
+            $(this).siblings('.holder_slide').append($(images).eq(next_start).clone());
+            $(this).siblings('.holder_slide').children().show();
+            $(this).siblings('.holder_slide').children().addClass('active');
         }
         $(this).siblings('.hidden-page-number').attr('data-start',next_start);
         $(this).siblings('.hidden-page-number').attr('data-end',next_end);
@@ -192,25 +200,29 @@ $.fn.slider = function(config){
                 $(this).siblings('.holder_slide').append($(images).eq(p).clone());
                 $(this).siblings('.holder_slide').children().show();
                 $(this).siblings('.holder_slide').children().addClass('active');
-                $(this).siblings('.holder_slide').children().css('position','relative');
+                
             }
         }
-        else{
+        else if(next_start > next_end){
 
             for(p = next_start;p <$(images).length;p++){
 
                 $(this).siblings('.holder_slide').append($(images).eq(p).clone());
                 $(this).siblings('.holder_slide').children().show();
                 $(this).siblings('.holder_slide').children().addClass('active');
-                $(this).siblings('.holder_slide').children().css('position','relative');
+               
             }
             for(p = 0;p <=next_end;p++){
 
                 $(this).siblings('.holder_slide').append($(images).eq(p).clone());
                 $(this).siblings('.holder_slide').children().show();
                 $(this).siblings('.holder_slide').children().addClass('active');
-                $(this).siblings('.holder_slide').children().css('position','relative');
+               
             }
+        }else{
+            $(this).siblings('.holder_slide').append($(images).eq(next_start).clone());
+            $(this).siblings('.holder_slide').children().show();
+            $(this).siblings('.holder_slide').children().addClass('active');
         }
 
         $(this).siblings('.hidden-page-number').attr('data-start',next_start);
@@ -218,7 +230,7 @@ $.fn.slider = function(config){
 
     });
 
-    ///////
+  
 
 }// end of if pagination
-//console.log(this);
+

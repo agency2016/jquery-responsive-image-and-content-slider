@@ -1,0 +1,29 @@
+
+.ex-slider , .img-slider{
+   
+   width:100%;
+   height: 250px;
+}
+.holder_slide{
+    width:100%;
+    height: 100%;
+    display: table;
+    table-layout: fixed;
+}
+.holder_slide .postslider {
+    height:0;
+    display: table-cell;
+    padding: 2px;
+   
+   
+}
+.postslider img{
+    width:100%;
+    height: 250px;
+}
+.prev{
+    z-index:8888;position: absolute;left: 0;top:50%;
+}
+.next{
+    z-index:8888;position: absolute;left: 94%;top:50%;
+}
